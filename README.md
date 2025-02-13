@@ -8,4 +8,4 @@ work. That is because the metadata needed for various things, like the formulary
 expected to be customized for most sites.
 
 Additional metadata used in the O3 demo environments is contained in the Reference Application Demo content
-package.
+package: https://github.com/openmrs/openmrs-content-referenceapplication-demo
