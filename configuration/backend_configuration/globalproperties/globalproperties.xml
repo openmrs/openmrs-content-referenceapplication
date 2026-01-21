@@ -3,10 +3,12 @@
         <globalProperty>
             <property>concept.true</property>
             <value>1</value>
+            <description>(Deprecated) Concept id of the concept defining the TRUE boolean value. Mapped to OpenMRS:TRUE.</description>
         </globalProperty>
         <globalProperty>
             <property>concept.false</property>
             <value>2</value>
+            <description>(Deprecated) Concept id of the concept defining the FALSE boolean value. Mapped to OpenMRS:FALSE.</description>
         </globalProperty>
         <globalProperty>
             <property>visits.assignmentHandler</property>
