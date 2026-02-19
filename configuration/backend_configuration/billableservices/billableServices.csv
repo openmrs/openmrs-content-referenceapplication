@@ -1,0 +1,4 @@
+Uuid, Void/Retire, Service Name, Short Name, Concept, Service Type, Service Status
+a1b2c3d4-0002-0001-0001-000000000001,, Consultation, CONS, 160542AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, Consultation Services, Enabled
+a1b2c3d4-0002-0001-0001-000000000002,, Acetaminophen, ACE, 70116AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, Drug Services, Enabled
+a1b2c3d4-0002-0001-0001-000000000003,, Amoxicillin, AMOX, 723AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, Drug Services, Enabled
