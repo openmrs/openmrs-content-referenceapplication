@@ -11,9 +11,11 @@ package: https://github.com/openmrs/openmrs-content-referenceapplication-demo
 Generally, the goal is to make the "referenceapplication" content package free from content that an 
 implementation might need to customize and to stick to only core content backing specific things. For example,
 the O3 Login page requires that the "Login Location" tag be available (and associated with at least one 
-location), but locations vary by implementation and even site, so this package just contains the tag.
-Similarly, the Immunization feature requires the CIEL Immunization History concept set to structure obs so
-this is included but the list of immunizations should not be.
+location), but locations vary by implementation and even site, so this package contains the tag and puts it
+on the one location that is not a site's choice: the "Unknown Location" openmrs-core creates in every
+database. It defines no facility of its own. Similarly, the Immunization feature requires the CIEL
+Immunization History concept set to structure obs so this is included but the list of immunizations should
+not be.
 
 ## What's here
 
@@ -31,11 +33,22 @@ The metadata O3 features reference directly, and that a site would not pick for 
 - **Also** — the allergy set, cause of death, stock management concepts, procedure types, relationship types,
   person and visit attribute types, and the encounter print and ID sticker defaults.
 
-Anything a site supplies or replaces stays in the demo package: locations, programs, forms, service queues,
-appointment services, the formulary, the lab and diagnosis catalogs, and the address hierarchy.
+A site's own locations, programs, forms, service queues, appointment services, formulary, lab and diagnosis
+catalogs and address hierarchy all stay in the demo package.
 
-### This package does not stand up an EMR on its own
+### Logging in without the demo package
 
-Following the boundary above, it ships no locations, so nothing carries the `Login Location` tag. A
-distribution built from this package without the demo package has to supply at least one location tagged
-`Login Location` and `Visit Location` before anyone can finish logging in.
+O3's login page only offers locations tagged `Login Location`, and per the boundary above this package
+defines no facility of its own. What it does do is tag the `Unknown Location` that openmrs-core creates
+in every database as a `Login Location`, a `Visit Location` and a `Queue Location`, so a distribution
+built without the demo package can be logged into, can record a visit, and can open its default home
+page out of the box.
+
+The `Queue Location` tag is not optional decoration: `/home` resolves to the Service Queues dashboard,
+and with no location carrying that tag `@openmrs/esm-service-queues-app` throws
+`Cannot read properties of undefined (reading 'id')` — so the first screen after login is an error
+page. Deliberately *not* tagged: `Admission Location` and `Transfer Location` (admitting a patient to
+"Unknown Location" is meaningless — a site tags its own wards) and `Facility Location`.
+
+That is a placeholder, not a facility. A site is expected to add its own locations, tag those, and retire
+`Unknown Location` — anything recorded against it in the meantime stays attached to it.
