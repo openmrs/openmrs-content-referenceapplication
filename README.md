@@ -19,36 +19,49 @@ not be.
 
 ## What's here
 
-The metadata O3 features reference directly, and that a site would not pick for itself:
+Metadata that **must be set this way** — an O3 app or module resolves it by uuid, code or name, so an
+implementation changing it breaks the feature rather than customising it:
 
-- **Identity** — the `OpenMRS ID` identifier type, its idgen sequential source and autogeneration option.
-- **Encounters and visits** — encounter types, encounter roles and visit types.
-- **Access control** — the `Privilege Level: Full`/`High` roles, the `Application: ...` roles that O3 checks,
-  and the module privileges they grant.
-- **emrapi wiring** — the metadata source, metadata sets and the term mappings O3 resolves by code
-  (`emr.primaryIdentifierType`, `emr.admissionEncounterType`, `emr.clinicianEncounterRole`, ...).
-- **ADT** — the dispositions, and the ADT concepts they resolve against.
-- **Ordering** — order frequencies, dosing units and dispensing statuses, with the CIEL dictionaries backing them.
-- **Vitals** — the vital sign concepts, the `Vital signs` convenience set and their reference ranges.
-- **Also** — the allergy set, cause of death, stock management concepts, procedure types, relationship types,
-  person and visit attribute types, and the encounter print and ID sticker defaults.
+- **Encounters** — the encounter types and encounter roles that O3's apps and the emrapi mappings
+  reference by uuid.
+- **Access control** — the `Privilege Level: Full`/`High` roles, the `Application: ...` roles that O3
+  checks by name, and the module privileges they grant.
+- **emrapi wiring** — the metadata source, and the term mappings whose *targets* are fixed
+  (`emr.admissionEncounterType`, `emr.visitNoteEncounterType`, `emr.clinicianEncounterRole`, ...).
+- **ADT** — the dispositions, and the ADT concepts they resolve against by concept code.
+- **Vitals** — the vital sign concepts `esm-patient-vitals-app` resolves by uuid, and the `Vital signs`
+  convenience set.
+- **Dictionaries a feature depends on structurally** — the allergy set, dosing units, dispensing
+  statuses, frequencies, cause of death, stock management concepts.
 
-A site's own locations, programs, forms, service queues, appointment services, formulary, lab and diagnosis
-catalogs and address hierarchy all stay in the demo package.
+What an implementation may reasonably want its own version of stays in the demo package, even when O3
+needs *something* there: locations, the identifier types and their generator, visit types, order
+frequencies, relationship and person attribute types, procedure types, reference ranges, print
+defaults, programs, forms, service queues, appointment services, the formulary, the lab and diagnosis
+catalogs and the address hierarchy.
 
-### Logging in without the demo package
+That distinction is the point, and it is not the same as "needed to run O3" — most of what is in the
+demo package is strictly necessary too. The question is whether a site should be **able** to change it.
 
-O3's login page only offers locations tagged `Login Location`, and per the boundary above this package
-defines no facility of its own. What it does do is tag the `Unknown Location` that openmrs-core creates
-in every database as a `Login Location`, a `Visit Location` and a `Queue Location`, so a distribution
-built without the demo package can be logged into, can record a visit, and can open its default home
-page out of the box.
+### The one bootstrap exception
 
-The `Queue Location` tag is not optional decoration: `/home` resolves to the Service Queues dashboard,
-and with no location carrying that tag `@openmrs/esm-service-queues-app` throws
-`Cannot read properties of undefined (reading 'id')` — so the first screen after login is an error
-page. Deliberately *not* tagged: `Admission Location` and `Transfer Location` (admitting a patient to
-"Unknown Location" is meaningless — a site tags its own wards) and `Facility Location`.
+Locations are the canonical thing an implementation defines for itself, so this package defines **no
+facility**. But O3's login page only offers locations tagged `Login Location`, so with the demo package
+left out there is nothing to log in *to*. The compromise here is to tag the one location that is not a
+site's choice — the `Unknown Location` openmrs-core creates in every database — as a `Login Location`, a
+`Visit Location` and a `Queue Location`. No facility is invented and no uuid is created.
+
+`Queue Location` is not optional decoration: `/home` resolves to the Service Queues dashboard, and with
+no location carrying that tag `@openmrs/esm-service-queues-app` throws
+`Cannot read properties of undefined (reading 'id')`, so the first screen after login is an error page.
+Deliberately *not* tagged: `Admission Location` and `Transfer Location` (admitting a patient to "Unknown
+Location" is meaningless — a site tags its own wards) and `Facility Location`.
+
+This is a bootstrap concern rather than content, and it arguably belongs in a separate minimal package
+alongside an identifier source and a visit type, so that a distribution can boot before an
+implementation has authored anything. Until such a package exists it lives here, and a site is expected
+to add its own locations, tag those, and retire `Unknown Location` — anything recorded against it in the
+meantime stays attached to it.
 
 That is a placeholder, not a facility. A site is expected to add its own locations, tag those, and retire
 `Unknown Location` — anything recorded against it in the meantime stays attached to it.
