@@ -1,0 +1,16 @@
+<config>
+    <globalProperties>
+        <!-- This requires that the sort weight for priority concepts be maintained in order of least to most urgent -->
+        <globalProperty>
+            <property>queue.sortWeightGenerator</property>
+            <value>basicPrioritySortWeightGenerator</value>
+        </globalProperty>
+
+        <!-- Cause of Death, from the DeathCause OCL package in this content package -->
+        <globalProperty>
+            <property>concept.causeOfDeath</property>
+            <value>9272a14b-7260-4353-9e5b-5787b5dead9d</value>
+        </globalProperty>
+
+    </globalProperties>
+</config>
