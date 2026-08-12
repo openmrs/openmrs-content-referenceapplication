@@ -59,9 +59,12 @@ Location" is meaningless — a site tags its own wards) and `Facility Location`.
 
 This is a bootstrap concern rather than content, and it arguably belongs in a separate minimal package
 alongside an identifier source and a visit type, so that a distribution can boot before an
-implementation has authored anything. Until such a package exists it lives here, and a site is expected
-to add its own locations, tag those, and retire `Unknown Location` — anything recorded against it in the
-meantime stays attached to it.
+implementation has authored anything. Until such a package exists it lives here. It is a placeholder,
+not a facility: a site is expected to add its own locations, tag those, and retire `Unknown Location` —
+anything recorded against it in the meantime stays attached to it.
 
-That is a placeholder, not a facility. A site is expected to add its own locations, tag those, and retire
-`Unknown Location` — anything recorded against it in the meantime stays attached to it.
+**Logging in is as far as this package gets you.** Measured on a distribution built from it alone, with
+no demo package: login completes and every O3 route renders, but there are no visit types and no idgen
+identifier source, so you cannot start a visit and O3's registration has nothing to generate a primary
+identifier from. Both are things a site defines for itself, so they stay in the demo package by design —
+an implementation is expected to supply them, using that package as the worked example.
